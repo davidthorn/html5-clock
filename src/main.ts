@@ -25,7 +25,10 @@ window.onload = () => {
         }
     })
 
-    window.clock.draw()
+    setInterval(() => {
+        window.clock.draw()
+    }, 1000)
+    //window.clock.draw()
 
     console.log('window has loaded');
 
