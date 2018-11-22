@@ -33,15 +33,17 @@ export class Clock implements HTMLClock {
         let handSize = this.frame.bounds.width / 100
 
         for(let tick = 0; tick <= 60; tick++) {
-            this.drawTick(tick, this.frame.radius * 0.9 , handSize * 0.7 , '#222222' )
+            this.drawTick(tick, this.frame.radius * 0.9 , handSize * 0.7 , tick % 5 === 0 ? '#222222' : '#22222220' )
         }
 
-        this.drawHand(this.time.seconds , this.frame.radius * 0.9 , handSize * 0.7 , '#a1a1a1' )
+        
         this.drawHand(this.time.minutes , this.frame.radius * 0.8 , handSize)
-        this.drawHand(this.time.hours , this.frame.radius * 0.7 , handSize * 2)
+        this.drawHand((this.time.hours - 12) * 5 , this.frame.radius * 0.7 , handSize * 2)
 
         /// spot in the middle
         this.drawCircle(this.frame.center.x , this.frame.center.y , (this.frame.bounds.width / 100) * 2, 'black')
+        this.drawHand(this.time.seconds , this.frame.radius * 0.9 , handSize * 0.7 , '#a1a1a1' )
+        this.drawCircle(this.frame.center.x , this.frame.center.y , (this.frame.bounds.width / 100) * 1.2, 'silver')
         
     }
 
@@ -103,7 +105,7 @@ export class Clock implements HTMLClock {
 
     drawTick(point: number, length: number , thickness: number , color: string = 'black') {
         
-        let lineLength = (this.frame.bounds.width / 100) * 2
+        let lineLength = (this.frame.bounds.width / 100) * (point % 15 === 0 ? 4 : 2 )
         let angle =  ((360 / 60) * point) - 90
         let radian = (angle / 180) * Math.PI
        
@@ -124,7 +126,7 @@ export class Clock implements HTMLClock {
         c.beginPath()
         c.moveTo(tickPoint.x , tickPoint.y)
         c.lineTo(secondPoint.x, secondPoint.y)
-        c.lineWidth = thickness;
+        c.lineWidth = thickness * (point % 15 === 0 ? 2 : 1 ); 
         c.strokeStyle = color
         c.stroke()
         c.closePath()

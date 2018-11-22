@@ -1,15 +1,5 @@
 import { Clock } from './models'
 
-
-
-
-
-let container: HTMLElement
-let canvas: HTMLCanvasElement
-let context: CanvasRenderingContext2D
-
-let canvasId: string = 'html5-clock'
-
 window.onload = () => {
 
     let container = document.getElementById('container') as HTMLElement
@@ -28,8 +18,5 @@ window.onload = () => {
     setInterval(() => {
         window.clock.draw()
     }, 1000)
-    //window.clock.draw()
-
-    console.log('window has loaded');
-
+  
 }
