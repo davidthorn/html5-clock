@@ -1,15 +1,9 @@
 interface Window {
-    clock: any
-    david: David
+    clock: HTMLClock
 }
 
 interface Date {
     asHTMLClockTime: () => HTMLClockTime
-}
-
-interface David {
-    name: string
-    surname: string
 }
 
 type Seconds = number
@@ -32,6 +26,7 @@ interface HTMLClock {
     time: HTMLClockTime
     frame: HTMLClockFrame
     draw(): void
+    resize(): void
 }
 
 type HTMLClockPoint = {

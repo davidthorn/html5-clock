@@ -22,6 +22,21 @@ export class Clock implements HTMLClock {
         this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D 
     }
 
+    resize() {
+        let bounds = this.container.getBoundingClientRect()
+        this.frame =  {
+            bounds: bounds as HTMLClockBounds,
+            radius: (bounds.width * 0.95) / 2,
+            center: {
+                x: bounds.width / 2 ,
+                y: bounds.height / 2
+            }
+        }
+        this.canvas.width = bounds.width
+        this.canvas.height = bounds.height
+        this.draw()
+    }
+
     draw() {
         let date = new Date()
         this.time = date.asHTMLClockTime()

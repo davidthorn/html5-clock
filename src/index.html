@@ -2,16 +2,57 @@
 <html>
     <head>
         <base href=".">
-        <title>Clock</title>
-
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <!-- COMMON TAGS -->
+        <meta charset="utf-8">
+        <title>HTML5 and Javascript Clock by David Thorn </title>
+        <!-- Search Engine -->
+        <meta name="description" content="This is a simple html 5 project using typescript to create an html 5 analog clock within a browser">
+        <!-- Schema.org for Google -->
+        <meta itemprop="name" content="HTML5 and Javascript Clock by David Thorn ">
+        <meta itemprop="description" content="This is a simple html 5 project using typescript to create an html 5 analog clock within a browser">
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:title" content="HTML5 and Javascript Clock by David Thorn ">
+        <meta name="twitter:description" content="This is a simple html 5 project using typescript to create an html 5 analog clock within a browser">
+        <!-- Open Graph general (Facebook, Pinterest & Google+) -->
+        <meta name="og:title" content="HTML5 and Javascript Clock by David Thorn ">
+        <meta name="og:description" content="This is a simple html 5 project using typescript to create an html 5 analog clock within a browser">
+        <meta name="og:image" content="https://html5-clock-davidthorn.netlify.com/html5-clock-davidthorn.png">
+        <meta name="og:url" content="https://html5-clock-davidthorn.netlify.com/">
+        <meta name="og:site_name" content="HTML5 Clock">
+        <meta name="og:type" content="website">
         <style type="text/css">
-            .container {
-                width: 100vh;
-                height: 100vh;
-                margin: 10px auto 10px auto
+
+           
+
+            @media (orientation: landscape) {
+                .container {
+                    width: 95vh;
+                    height: 95vh;
+                    margin: 2.5vh auto 2.5vh auto;
+                }
             }
+
+            @media (orientation: portrait) {
+                .container {
+                    width: 95vw;
+                    height: 95vw;
+                    margin: 2.5vw;
+                }
+            }
+            
+
+
+            
         </style>
         <script src="./bundle.js" type="text/javascript"></script>
+        <script>
+            window.onresize = () => {
+                console.log('redrawing');
+                window.clock.resize();
+            }
+        </script>
     </head>
     <body>
         <div id="container" class="container"></div>

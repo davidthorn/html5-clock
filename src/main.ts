@@ -18,5 +18,5 @@ window.onload = () => {
     setInterval(() => {
         window.clock.draw()
     }, 1000)
-  
+
 }
