@@ -1,4 +1,3 @@
-
 export class Clock implements HTMLClock {
 
     container: HTMLElement
@@ -35,7 +34,6 @@ export class Clock implements HTMLClock {
         for(let tick = 0; tick <= 60; tick++) {
             this.drawTick(tick, this.frame.radius * 0.9 , handSize * 0.7 , tick % 5 === 0 ? '#222222' : '#22222220' )
         }
-
         
         this.drawHand(this.time.minutes , this.frame.radius * 0.8 , handSize)
         this.drawHand((this.time.hours - 12) * 5 , this.frame.radius * 0.7 , handSize * 2)
@@ -50,7 +48,7 @@ export class Clock implements HTMLClock {
     drawContainer() {
         const c = this.ctx
         c.beginPath()
-        c.fillStyle = 'red'
+        c.fillStyle = 'white'
         c.fillRect(0, 0, this.frame.bounds.width , this.frame.bounds.height)
         c.closePath()
     }
@@ -81,56 +79,39 @@ export class Clock implements HTMLClock {
     }
 
     drawHand(point: number, length: number , thickness: number , color: string = 'black') {
-        
-        let angle =  ((360 / 60) * point) - 90
-        let radian = (angle / 180) * Math.PI
-       
-        let c = this.ctx
-
-        c.beginPath()
-
-        let secondPoint = {
-            x: this.frame.center.x + length * Math.cos(radian),
-            y: this.frame.center.y + length * Math.sin(radian)
-        }
-
-        c.moveTo(this.frame.center.x , this.frame.center.y)
-        c.lineTo( secondPoint.x, secondPoint.y)
-        c.lineWidth = thickness;
-        c.strokeStyle = color
-        c.stroke()
-        c.closePath()
-       
+        let secondPoint = this.getPointForTick(point , length)
+        this.drawLine(this.frame.center , secondPoint , thickness , color)
     }
 
     drawTick(point: number, length: number , thickness: number , color: string = 'black') {
-        
         let lineLength = (this.frame.bounds.width / 100) * (point % 15 === 0 ? 4 : 2 )
+        let secondPoint = this.getPointForTick(point , length)
+        let tickPoint = this.getPointForTick(point , length - lineLength)
+        this.drawLine(tickPoint, secondPoint, thickness * (point % 15 === 0 ? 2 : 1 ) , color)
+    }
+
+    drawLine(start: HTMLClockPoint , end: HTMLClockPoint, thickness: number , color: string) {
+        let c = this.ctx
+        c.beginPath()
+        c.moveTo(start.x , start.y)
+        c.lineTo(end.x, end.y)
+        c.lineWidth = thickness
+        c.strokeStyle = color
+        c.stroke()
+        c.closePath()
+    }
+
+    getPointForTick(point: number , length: number): HTMLClockPoint {
+        
         let angle =  ((360 / 60) * point) - 90
         let radian = (angle / 180) * Math.PI
        
-        let c = this.ctx
-
-        c.beginPath()
-
-        let secondPoint = {
+        let secondPoint: HTMLClockPoint = {
             x: this.frame.center.x + length * Math.cos(radian),
             y: this.frame.center.y + length * Math.sin(radian)
         }
 
-        let tickPoint = {
-            x: this.frame.center.x + (length - lineLength) * Math.cos(radian),
-            y: this.frame.center.y + (length - lineLength) * Math.sin(radian)
-        }
-
-        c.beginPath()
-        c.moveTo(tickPoint.x , tickPoint.y)
-        c.lineTo(secondPoint.x, secondPoint.y)
-        c.lineWidth = thickness * (point % 15 === 0 ? 2 : 1 ); 
-        c.strokeStyle = color
-        c.stroke()
-        c.closePath()
-       
+        return secondPoint
     }
 
 } 
