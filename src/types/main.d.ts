@@ -1,15 +1,9 @@
 interface Window {
     clock: any
-    david: David
 }
 
 interface Date {
     asHTMLClockTime: () => HTMLClockTime
-}
-
-interface David {
-    name: string
-    surname: string
 }
 
 type Seconds = number
