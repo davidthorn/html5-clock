@@ -27,8 +27,11 @@ type HTMLClockTime = {
 }
 
 interface HTMLClock {
+    container: HTMLElement
+    canvas: HTMLCanvasElement
     time: HTMLClockTime
     frame: HTMLClockFrame
+    draw(): void
 }
 
 type HTMLClockPoint = {
