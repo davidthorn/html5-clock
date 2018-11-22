@@ -32,6 +32,10 @@ export class Clock implements HTMLClock {
 
         let handSize = this.frame.bounds.width / 100
 
+        for(let tick = 0; tick <= 60; tick++) {
+            this.drawTick(tick, this.frame.radius * 0.9 , handSize * 0.7 , '#222222' )
+        }
+
         this.drawHand(this.time.seconds , this.frame.radius * 0.9 , handSize * 0.7 , '#a1a1a1' )
         this.drawHand(this.time.minutes , this.frame.radius * 0.8 , handSize)
         this.drawHand(this.time.hours , this.frame.radius * 0.7 , handSize * 2)
@@ -50,13 +54,9 @@ export class Clock implements HTMLClock {
     }
 
     drawClockFace() {
-        
         let c = this.ctx
         let center = this.frame.center
-
         this.drawStrokedCircle(center.x , center.y , this.frame.radius , 'white', 'black' , (this.frame.bounds.width / 100) * 2 )
-        
-       
     }
 
     drawCircle(x: number, y: number, radius: number, fillColor: string = 'black' , shouldClosePath: boolean = true) {
@@ -87,8 +87,13 @@ export class Clock implements HTMLClock {
 
         c.beginPath()
 
+        let secondPoint = {
+            x: this.frame.center.x + length * Math.cos(radian),
+            y: this.frame.center.y + length * Math.sin(radian)
+        }
+
         c.moveTo(this.frame.center.x , this.frame.center.y)
-        c.lineTo(this.frame.center.x + length * Math.cos(radian) , this.frame.center.y + length * Math.sin(radian))
+        c.lineTo( secondPoint.x, secondPoint.y)
         c.lineWidth = thickness;
         c.strokeStyle = color
         c.stroke()
@@ -96,108 +101,35 @@ export class Clock implements HTMLClock {
        
     }
 
-    drawLine(x: number, y: number, length: number, fillColor: string = 'black', angle: number) {
-
-        let newX: number = 0
-        let newY: number = 0
-
-        switch(angle) {
-            case 0:
-                newX = x
-                newY = y - length
-            break;
-            case 90:
-                newX = x + length
-                newY = y
-            break;
-            case 180:
-                newX = x
-                newY = y + length
-            break;
-            case 270:
-                newX = x - length
-                newY = y
-                console.log({ newX, newY })
-            break;
-            default: 
-                let rem = angle % 90
-                let hypo: number = length // hypotheneus
-                let sin = Math.sin(rem) // SOH 
-
-                /// O = S * H
-                let op: number = Math.abs(sin * hypo)
-
-                // A = O * T // T = 0/A
-                let adj: number = Math.abs(op / Math.tan(rem))
+    drawTick(point: number, length: number , thickness: number , color: string = 'black') {
         
-                switch(true) {
-                    case angle >= 0 && angle < 90:
-                        console.log(`${angle} >= 0 && ${angle} < 90`)
-                        newX = x + op
-                        newY = y -adj
-                    break;
-                    case angle >= 90 && angle < 180:
-                        newX = x + op
-                        newY = y + adj
-                    break;
-                    case angle >= 180 && angle < 270:
-                        newX = x - op
-                        newY = y + adj
-                    break;
-                    case angle >= 270 && angle < 360:
-                        newX = x - op
-                        newY = y - adj
-                    break;
-                    default: break
-                }
+        let lineLength = (this.frame.bounds.width / 100) * 2
+        let angle =  ((360 / 60) * point) - 90
+        let radian = (angle / 180) * Math.PI
+       
+        let c = this.ctx
 
-                
-                console.log({
-                    trig: {
-                        hypoa: hypo * hypo,
-                        adja: (adj * adj),
-                        opa: Math.sqrt((hypo * hypo) - (adj * adj)),
-                        hypo, 
-                        adj,
-                        op
-                    },
-                    x,
-                    y,
-                    sin,
-                    angle,
-                    rem,
-                    hypo,
-                    adj,
-                    op,
-                    newX,
-                    newY
-                })
-            break;
+        c.beginPath()
+
+        let secondPoint = {
+            x: this.frame.center.x + length * Math.cos(radian),
+            y: this.frame.center.y + length * Math.sin(radian)
         }
 
-        /// 0 = y - length
+        let tickPoint = {
+            x: this.frame.center.x + (length - lineLength) * Math.cos(radian),
+            y: this.frame.center.y + (length - lineLength) * Math.sin(radian)
+        }
 
-        /// 30 = 1 hypo  required
-
-        // 60 = 2 = hyp required
-
-        // 90 = 3 = x + length 
-
-
-        let angleCorrect = angle === 0 ? 360 : angle
-
-
-        
-
-        let c = this.ctx
         c.beginPath()
-        c.strokeStyle = 'blue'
-        c.moveTo(x, y)
-        c.lineTo(newX, newY)
+        c.moveTo(tickPoint.x , tickPoint.y)
+        c.lineTo(secondPoint.x, secondPoint.y)
+        c.lineWidth = thickness;
+        c.strokeStyle = color
         c.stroke()
         c.closePath()
+       
     }
-    
 
 } 
 
