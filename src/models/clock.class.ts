@@ -3,8 +3,11 @@ export class Clock implements HTMLClock {
 
     time: HTMLClockTime
 
-    constructor(time: HTMLClockTime) {
+    frame: HTMLClockFrame
+
+    constructor(time: HTMLClockTime, frame: HTMLClockFrame) {
         this.time = time
+        this.frame = frame
     }
 
 } 
